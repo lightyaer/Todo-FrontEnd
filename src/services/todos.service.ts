@@ -3,56 +3,101 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 
+
 @Injectable()
-export class LoginProvider {
+export class TodoProvider {
+    baseUrl: string;
 
-
-    httpOptions = {
-        headers: new HttpHeaders({
-            'Content-type': 'application/json',
-            'x-auth': localStorage.getItem('x-auth')
-        })
-    };
-
-    baseUrl: 'localhost:3000/'
     constructor(public http: HttpClient, public headers: HttpHeaders) {
+        this.baseUrl = 'http://localhost:3000/'
     }
 
     getAllTodos() {
+        return new Promise((resolve, reject) => {
+            return this.http.get(this.baseUrl + 'todos', {
+                headers: new HttpHeaders({
+                    'Content-type': 'application/json',
+                    'x-auth': localStorage.getItem('x-auth')
+                })
+            }).subscribe(res => {
+                resolve(res)
+            }, (error) => {
+                reject(error)
+            })
+        })
 
-        return this.http.get(this.baseUrl + 'todos', this.httpOptions)
     }
 
     getTodoByID(TodoID) {
-        return this.http.get(this.baseUrl + 'todos/' + TodoID, this.httpOptions)
+
+        return new Promise((resolve, reject) => {
+            return this.http.get(this.baseUrl + 'todos/' + TodoID, {
+                headers: new HttpHeaders({
+                    'Content-type': 'application/json',
+                    'x-auth': localStorage.getItem('x-auth')
+                })
+            }).subscribe(res => {
+                resolve(res)
+            }, (error) => {
+                reject(error)
+            })
+        })
+
+
     }
 
-    createTodo(todo) {
-        return this.http.post(this.baseUrl + 'todos', JSON.stringify(todo), this.httpOptions)
+    createTodo(todo: Todo) {
+        return new Promise((resolve, reject) => {
+            return this.http.post(this.baseUrl + 'todos', JSON.stringify(todo), {
+                headers: new HttpHeaders({
+                    'Content-type': 'application/json',
+                    'x-auth': localStorage.getItem('x-auth')
+                })
+            }).subscribe(res => {
+                resolve(res)
+            }, (error) => {
+                reject(error)
+            })
+        })
+
     }
 
-    deleteTodoByID(TodoID) {
-        return this.http.delete(this.baseUrl + 'todos/' + TodoID, this.httpOptions)
+    deleteTodoByID(TodoID: string) {
+        return new Promise((resolve, reject) => {
+            return this.http.delete(this.baseUrl + 'todos/' + TodoID, {
+                headers: new HttpHeaders({
+                    'Content-type': 'application/json',
+                    'x-auth': localStorage.getItem('x-auth')
+                })
+            }).subscribe(res => {
+                resolve(res)
+            }, (error) => {
+                reject(error)
+            })
+        })
+
     }
 
-    updateTodoByID(TodoID, newTodo) {
-        return this.http.patch(this.baseUrl + 'todos/' + TodoID, JSON.stringify(newTodo), this.httpOptions)
+    updateTodoByID(TodoID: string, newTodo: Todo) {
+
+        return new Promise((resolve, reject) => {
+            return this.http.patch(this.baseUrl + 'todos/' + TodoID, JSON.stringify(newTodo), {
+                headers: new HttpHeaders({
+                    'Content-type': 'application/json',
+                    'x-auth': localStorage.getItem('x-auth')
+                })
+            }).subscribe(res => {
+                resolve(res)
+            }, (error) => {
+                reject(error)
+            })
+        })
+
+
     }
 
 }
 
-
-    /*
-    GET /todos => get all todos
-    POST /todos => create todos
-    GET /todos/id => get todo by ID
-    DELETE /todos/id => delete todo by id
-    PATCH /todos/id => update todos
-    POST /users => signup
-    GET users/me => get user by token
-    POST /users/login => login
-    DELETE /users/me/token =>  logout
-    */
 
 
 
